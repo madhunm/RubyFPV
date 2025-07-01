@@ -39,7 +39,7 @@
 #include "render_engine_raw.h"
 #endif
 
-#if defined (HW_PLATFORM_RADXA)
+#if defined (USE_DRM_RENDERER) || defined (HW_PLATFORM_RADXA)
 #include "render_engine_cairo.h"
 #endif
 
@@ -54,14 +54,13 @@ RenderEngine* render_init_engine()
    log_line("[RenderEngine] Renderer Engine Init...");
    if ( NULL == s_pRenderEngine )
    {
-      #if defined (HW_PLATFORM_RASPBERRY)
-      s_bRenderEngineSupportsRawFonts = true;
-      s_pRenderEngine = new RenderEngineRaw();
-      #endif
-      #if defined (HW_PLATFORM_RADXA)
+#if defined(USE_DRM_RENDERER) || defined(HW_PLATFORM_RADXA)
       s_bRenderEngineSupportsRawFonts = true;
       s_pRenderEngine = new RenderEngineCairo();
-      #endif
+#else
+      s_bRenderEngineSupportsRawFonts = true;
+      s_pRenderEngine = new RenderEngineRaw();
+#endif
 
       if (NULL != s_pRenderEngine )
          s_pRenderEngine->initEngine();

@@ -47,6 +47,14 @@ https://www.rcgroups.com/forums/showthread.php?3880253-Ruby-Digital-radio-RC-FPV
 
 or by sending an email to petrusoroaga@yahoo.com, providing a short explanation of what you are trying to accomplish.
 
+To build on Raspberry Pi using the DRM renderer, run:
+
+```
+make all RUBY_BUILD_ENV=pi_drm
+```
+
+This requires the `libdrm` and `libcairo` development packages to be installed.
+
 # Adding code
 
 You can create pull requests, if that's what you really want, and I will code review them.
