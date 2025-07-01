@@ -86,7 +86,7 @@ int _hdmi_detect_current_mode()
 {
    log_line("[HDMI] Detecting current HDMI mode...");
 
-   #if defined (HW_PLATFORM_RASPBERRY)
+#if defined(HW_PLATFORM_RASPBERRY) && !defined(USE_DRM_RENDERER)
    char szBuff[1024];
    int hgroup = 0;
    int hmode = 0;
@@ -129,7 +129,7 @@ int _hdmi_detect_current_mode()
    return -1;
    #endif
 
-   #if defined (HW_PLATFORM_RADXA)
+#if defined(USE_DRM_RENDERER) || defined (HW_PLATFORM_RADXA)
 
    // Mode[0] is always the current display mode
    s_nHDMI_CurrentResolutionIndex = 0;
@@ -213,7 +213,7 @@ int _hdmi_detect_current_mode()
    drmModeFreeResources(pAllDRMResources);
    close(fdDRM);
    return 0;
-   #endif
+#endif
    return -1;
 }
 
@@ -223,7 +223,7 @@ int hdmi_enum_modes()
    s_nHDMI_CurrentResolutionIndex = -1;
    s_nHDMI_CurrentResolutionRefreshIndex = -1;
 
-   #if defined (HW_PLATFORM_RASPBERRY)
+   #if defined (HW_PLATFORM_RASPBERRY) && !defined(USE_DRM_RENDERER)
    _hdmi_add_resolution(1,1, 640, 480, 60, HDMI_ASPECT_MODE_4_3);
    _hdmi_add_resolution(2,9, 800, 600, 60, HDMI_ASPECT_MODE_4_3);
    _hdmi_add_resolution(2,16, 1024, 768, 60, HDMI_ASPECT_MODE_4_3);
@@ -250,7 +250,7 @@ int hdmi_enum_modes()
    return 0;
    #endif
 
-   #if defined (HW_PLATFORM_RADXA)
+   #if defined (USE_DRM_RENDERER) || defined (HW_PLATFORM_RADXA)
    return _hdmi_detect_current_mode();
    #endif
 }
