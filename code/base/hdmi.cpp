@@ -6,10 +6,10 @@
 #include "hw_procs.h"
 #include <errno.h>
 #include <unistd.h>
-#if defined(HW_PLATFORM_RADXA)
+#if defined(USE_DRM_RENDERER) || defined(HW_PLATFORM_RADXA)
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <drm_fourcc.h> 
+#include <drm_fourcc.h>
 #endif
 
 #define MAX_HDMI_RESOLUTIONS 30
