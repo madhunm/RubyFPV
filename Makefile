@@ -34,13 +34,14 @@ else
 LDFLAGS_CENTRAL := -L/usr/lib/arm-linux-gnueabihf -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm
 LDFLAGS_CENTRAL2 := -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lmmal  -lmmal_core -lmmal_util -lmmal_vc_client  
 
-LDFLAGS_RENDERER := -L../openvg -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lfreetype -lpng -ljpeg
-CFLAGS_RENDERER := -I/usr/include/libdrm
+LDFLAGS_RENDERER := -ldrm -lcairo
+CFLAGS_RENDERER := -I/usr/include/drm -I/usr/include/libdrm
+CFLAGS_RENDERER += `pkg-config cairo --cflags`
 
 _LDFLAGS := $(LDFLAGS) -lrt -lpcap -lpthread -lwiringPi -Wl,--gc-sections
 _CFLAGS := $(_CFLAGS) -DRUBY_BUILD_HW_PLATFORM_PI
 _CPPFLAGS := $(_CPPFLAGS) -DRUBY_BUILD_HW_PLATFORM_PI
-CENTRAL_RENDER_CODE := $(FOLDER_CENTRAL_RENDERER)/lodepng.o $(FOLDER_CENTRAL_RENDERER)/nanojpeg.o $(FOLDER_CENTRAL_RENDERER)/fbgraphics.o $(FOLDER_CENTRAL_RENDERER)/render_engine.o $(FOLDER_CENTRAL_RENDERER)/render_engine_raw.o $(FOLDER_CENTRAL_RENDERER)/render_engine_ui.o $(FOLDER_CENTRAL_RENDERER)/fbg_dispmanx.o
+CENTRAL_RENDER_CODE := $(FOLDER_CENTRAL_RENDERER)/render_engine.o $(FOLDER_CENTRAL_RENDERER)/render_engine_cairo.o $(FOLDER_CENTRAL_RENDERER)/render_engine_ui.o $(FOLDER_CENTRAL_RENDERER)/drm_core.o
 
 endif
 endif
