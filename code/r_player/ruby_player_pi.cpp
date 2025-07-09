@@ -75,9 +75,7 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-// shared mem stats similar to radxa player
 shared_mem_process_stats* g_pSMProcessStats = NULL;
-
 
 bool g_bQuit = false;
 bool g_bDebug = false;
@@ -118,6 +116,9 @@ static uint8_t* s_pFrameRGBBuffer = NULL;
 
 static int ffmpeg_init(bool bUseH265)
 {
+
+   avcodec_register_all();
+
    const AVCodec* codec = avcodec_find_decoder(bUseH265 ? AV_CODEC_ID_HEVC : AV_CODEC_ID_H264);
    if ( NULL == codec )
    {
