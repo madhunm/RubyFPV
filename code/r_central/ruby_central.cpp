@@ -74,7 +74,7 @@
 #include "../base/core_plugins_settings.h"
 #include "../base/utils.h"
 #if defined (HW_PLATFORM_RASPBERRY)
-#include "../renderer/render_engine_raw.h"
+#include "../renderer/render_engine_cairo.h"
 #endif
 #if defined (HW_PLATFORM_RADXA)
 #include "../renderer/drm_core.h"
