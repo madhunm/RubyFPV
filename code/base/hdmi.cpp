@@ -6,10 +6,10 @@
 #include "hw_procs.h"
 #include <errno.h>
 #include <unistd.h>
-#if defined(HW_PLATFORM_RADXA)
+#if defined(HW_PLATFORM_RADXA) || defined(HW_PLATFORM_RASPBERRY)
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <drm_fourcc.h> 
+#include <drm_fourcc.h>
 #endif
 
 #define MAX_HDMI_RESOLUTIONS 30
@@ -86,50 +86,8 @@ int _hdmi_detect_current_mode()
 {
    log_line("[HDMI] Detecting current HDMI mode...");
 
-   #if defined (HW_PLATFORM_RASPBERRY)
-   char szBuff[1024];
-   int hgroup = 0;
-   int hmode = 0;
-   szBuff[0] = 0;
-   hw_execute_bash_command_silent("cat /boot/config.txt | grep hdmi_group | sed -r 's/[=]+//g' | sed -r 's/[hdmi_group]+//g'", szBuff);
-   if ( 0 != szBuff[0] )
-      sscanf(szBuff, "%d", &hgroup);
 
-   szBuff[0] = 0;   
-   hw_execute_bash_command_silent("cat /boot/config.txt | grep hdmi_mode | sed -r 's/[=]+//g' | sed -r 's/[hdmi_mode]+//g'", szBuff);
-   if ( 0 != szBuff[0] )
-      sscanf(szBuff, "%d", &hmode);
-
-   if ( (hgroup <= 0) || (hmode <= 0) )
-   {
-      log_softerror_and_alarm("[HDMI] Failed to detect current HDMI mode (g:%d, m:%d)", hgroup, hmode);
-      return -1;
-   }
-   if ( (hgroup != 1) && (hgroup != 2) )
-   {
-      log_softerror_and_alarm("[HDMI] Failed to detect current HDMI mode. (g:%d, m:%d)", hgroup, hmode);
-      return -1;
-   }
-
-   for( int i=0; i<s_nHDMI_ResolutionCount; i++ )
-   {
-      for( int k=0; k<s_nHDMI_ResolutionRefreshCount[i]; k++ )
-      {
-         if ( s_nHDMI_ResolutionGroup[i][k] == hgroup )
-         if ( s_nHDMI_ResolutionMode[i][k] == hmode )
-         {
-            s_nHDMI_CurrentResolutionIndex = i;
-            s_nHDMI_CurrentResolutionRefreshIndex = k;
-            log_line("[HDMI] Current HDMI mode: (g:%d, m:%d), width, height: %d x %d, refresh: %d Hz", hgroup, hmode, s_nHDMI_ResolutionWidth[s_nHDMI_CurrentResolutionIndex], s_nHDMI_ResolutionHeight[s_nHDMI_CurrentResolutionIndex], s_nHDMI_ResolutionRefresh[s_nHDMI_CurrentResolutionIndex][s_nHDMI_CurrentResolutionRefreshIndex]);
-            return 0;
-         }
-      }
-   }
-   log_softerror_and_alarm("[HDMI] Failed to detect current HDMI mode. (g:%d, m:%d)", hgroup, hmode);
-   return -1;
-   #endif
-
-   #if defined (HW_PLATFORM_RADXA)
+   #if defined (HW_PLATFORM_RADXA) || defined (HW_PLATFORM_RASPBERRY)
 
    // Mode[0] is always the current display mode
    s_nHDMI_CurrentResolutionIndex = 0;
@@ -250,7 +208,7 @@ int hdmi_enum_modes()
    return 0;
    #endif
 
-   #if defined (HW_PLATFORM_RADXA)
+   #if defined (HW_PLATFORM_RADXA) || defined (HW_PLATFORM_RASPBERRY)
    return _hdmi_detect_current_mode();
    #endif
 }
