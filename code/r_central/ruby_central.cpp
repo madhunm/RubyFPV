@@ -73,11 +73,10 @@
 #include "../base/ruby_ipc.h"
 #include "../base/core_plugins_settings.h"
 #include "../base/utils.h"
-#if defined (HW_PLATFORM_RASPBERRY)
-#include "../renderer/render_engine_cairo.h"
-#endif
-#if defined (HW_PLATFORM_RADXA)
+#if defined (HW_PLATFORM_RASPBERRY) || defined(HW_PLATFORM_RADXA)
 #include "../renderer/drm_core.h"
+#include "../renderer/render_engine_cairo.h"
+#else
 #include "../renderer/render_engine_cairo.h"
 #endif
 
