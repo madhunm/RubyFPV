@@ -36,7 +36,7 @@
 
 #if defined (HW_PLATFORM_RASPBERRY)
 //#include "render_engine_ovg.h"
-#include "render_engine_raw.h"
+#include "render_engine_cairo.h"
 #endif
 
 #if defined (HW_PLATFORM_RADXA)
@@ -56,7 +56,7 @@ RenderEngine* render_init_engine()
    {
       #if defined (HW_PLATFORM_RASPBERRY)
       s_bRenderEngineSupportsRawFonts = true;
-      s_pRenderEngine = new RenderEngineRaw();
+      s_pRenderEngine = new RenderEngineCairo();
       #endif
       #if defined (HW_PLATFORM_RADXA)
       s_bRenderEngineSupportsRawFonts = true;
