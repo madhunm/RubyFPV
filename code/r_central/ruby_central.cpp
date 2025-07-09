@@ -2332,7 +2332,15 @@ int main(int argc, char *argv[])
    ControllerSettings* pCS = get_ControllerSettings();
    
    #if defined (HW_PLATFORM_RASPBERRY)
+   ruby_drm_core_wait_for_display_connected();
    hdmi_enum_modes();
+   int iHDMIIndex = hdmi_load_current_mode();
+   if ( iHDMIIndex < 0 )
+      iHDMIIndex = hdmi_get_best_resolution_index_for(DEFAULT_RADXA_DISPLAY_WIDTH, DEFAULT_RADXA_DISPLAY_HEIGHT, DEFAULT_RADXA_DISPLAY_REFRESH);
+   log_line("HDMI mode to use: %d (%d x %d @ %d)", iHDMIIndex, hdmi_get_current_resolution_width(), hdmi_get_current_resolution_height(), hdmi_get_current_resolution_refresh() );
+   ruby_drm_core_init(0, DRM_FORMAT_ARGB8888, hdmi_get_current_resolution_width(), hdmi_get_current_resolution_height(), hdmi_get_current_resolution_refresh());
+   ruby_drm_core_set_plane_properties_and_buffer(ruby_drm_core_get_main_draw_buffer_id());
+   ruby_drm_enable_vsync(pCS->iHDMIVSync);
    #endif
 
    #if defined (HW_PLATFORM_RADXA)
@@ -2573,6 +2581,21 @@ void ruby_reinit_hdmi_display()
    free_all_fonts();
    render_free_engine();
    
+   #if defined (HW_PLATFORM_RASPBERRY)
+   ruby_drm_core_uninit();
+   ruby_drm_core_wait_for_display_connected();
+
+   hdmi_enum_modes();
+   int iHDMIIndex = hdmi_load_current_mode();
+   if ( iHDMIIndex < 0 )
+      iHDMIIndex = hdmi_get_best_resolution_index_for(DEFAULT_RADXA_DISPLAY_WIDTH, DEFAULT_RADXA_DISPLAY_HEIGHT, DEFAULT_RADXA_DISPLAY_REFRESH);
+   log_line("HDMI mode to use: %d (%d x %d @ %d)", iHDMIIndex, hdmi_get_current_resolution_width(), hdmi_get_current_resolution_height(), hdmi_get_current_resolution_refresh() );
+   ruby_drm_core_init(0, DRM_FORMAT_ARGB8888, hdmi_get_current_resolution_width(), hdmi_get_current_resolution_height(), hdmi_get_current_resolution_refresh());
+   ruby_drm_core_set_plane_properties_and_buffer(ruby_drm_core_get_main_draw_buffer_id());
+   ControllerSettings* pCS = get_ControllerSettings();
+   ruby_drm_enable_vsync(pCS->iHDMIVSync);
+   #endif
+
    #if defined (HW_PLATFORM_RADXA)
    ruby_drm_core_uninit();
    ruby_drm_core_wait_for_display_connected();
