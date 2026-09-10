@@ -167,7 +167,6 @@ void MenuVehicleRadioConfig::populate()
       m_pItemsSelect[3]->setEnabled(false);
    }
 
-   /*
    m_pItemsSelect[2] = new MenuItemSelect("Radio Encryption", "Changes the encryption used for the radio links. You can encrypt the video data, or telemetry data, or everything, including the ability to search for and find this vehicle (unless your controller has the right pass phrase).");
    m_pItemsSelect[2]->addSelection("None");
    m_pItemsSelect[2]->addSelection("Video Stream Only");
@@ -176,9 +175,7 @@ void MenuVehicleRadioConfig::populate()
    m_pItemsSelect[2]->addSelection("All Streams and Data");
    m_pItemsSelect[2]->setIsEditable();
    m_IndexEncryption = addMenuItem(m_pItemsSelect[2]);
-   */
-   m_IndexEncryption = -1;
-   /*
+
    if ( -1 != m_IndexEncryption )
    {
       m_pItemsSelect[2]->setSelectedIndex(0);
@@ -201,7 +198,6 @@ void MenuVehicleRadioConfig::populate()
          //m_pItemsSelect[2]->setEnabled(false);
       }
    }
-   */
 
    m_IndexOptimizeLinks = addMenuItem(new MenuItem(L("Optmize Radio Links Wizard"), L("Runs a process to optimize radio links parameters.")));
    m_pMenuItems[m_IndexOptimizeLinks]->showArrow();

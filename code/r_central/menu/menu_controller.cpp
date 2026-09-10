@@ -117,10 +117,8 @@ void MenuController::addItems()
    m_IndexNetwork = addMenuItem(new MenuItem(L("Local Network Settings"), L("Change the local network settings on the controller (DHCP/Fixed IP)")));
    //m_pMenuItems[m_IndexNetwork]->showArrow();
 
-   m_IndexEncryption = -1;
-   //m_IndexEncryption = addMenuItem(new MenuItem("Encryption", "Change the encryption global settings"));
-   //m_pMenuItems[m_IndexEncryption]->showArrow();
-   //m_pMenuItems[m_IndexEncryption]->setEnabled(false);
+   m_IndexEncryption = addMenuItem(new MenuItem("Encryption", "Change the encryption global settings"));
+   m_pMenuItems[m_IndexEncryption]->showArrow();
 
    m_IndexButtons = addMenuItem(new MenuItem(L("Buttons"), L("Change buttons actions.")));
 
